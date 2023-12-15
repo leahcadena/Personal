@@ -1,0 +1,87 @@
+################################################################################
+#Leah Cadena, CS 2318-003, Assignment 2 Part 1 Program D
+
+#Prompt the user to enter the integer scores for Exam 1, Exam 2 and Final Exam,
+#read the scores, compute the weighted average score (using the following formula), 
+#and display a labeled output about the weighted average score.
+################################################################################
+
+		.data
+prompt1:	.asciiz	"Exam 1: "
+prompt2:	.asciiz	"Exam 2: "
+prompt3: 	.asciiz	"Final exam: "
+avgScore:	.asciiz	"Average score: "
+################################################################################
+		.text
+		.globl main
+main:
+ 		#Prompt the user to enter an integer for exam 1
+ 		la $a0, prompt1 
+		li $v0, 4
+		syscall
+		
+		#Read users input for exam 1
+		li $v0, 5 	 
+  		syscall
+  		move $t0, $v0
+  		
+  		#Prompt the user to enter an integer for exam 2
+  		la $a0, prompt2  
+		li $v0, 4
+		syscall
+		
+		#Read users input for exam 2
+		li $v0, 5 	 
+  		syscall
+  		move $t1, $v0
+  		
+  		#Prompt the user to enter an integer for final exam
+  		la $a0, prompt3  
+		li $v0, 4
+		syscall
+		
+		#Read users input for final exam
+  		li $v0, 5  	 
+  		syscall
+  		move $t2, $v0
+  		
+		#Multiply exam one grade by 128
+		sll $t0, $t0, 7  
+		#Load in 642	
+		li $t3, 642
+		#Divide exam1*128 / 642	 	
+		div $t0, $t3	 		
+		mflo $t0
+		
+		#Load in 154
+		li $t3,154	
+		#Multiply Exam 2 by 154 
+		mul $t1,$t1,$t3	
+		#Divide by 512 
+		sra $t1,$t1,9	 
+		
+		#Divide final exam grade by 2
+		sra $t2,$t2,1 	 
+		
+		#Add exam 1 and exam 2
+		add $t0,$t0,$t1 
+		#Add (exam1+exam2)+final exam 
+		add $t0,$t0,$t2	 
+		
+		#Display Average score:
+		la $a0,avgScore	 
+		li $v0,4
+		syscall
+		
+		#Display the average score
+		li $v0,1
+		move $a0,$t0     
+		syscall
+		
+		#Exit gracefully
+		li $v0,10	 
+		syscall	
+		
+		
+			
+	
